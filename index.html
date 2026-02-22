@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Todo List</title>
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+}
+
+.container{
+    width: 900px;
+    margin: 30px auto;
+    border: 2px solid #333;
+    padding: 20px;
+    background-color: #e6e6e6;
+}
+
+h1{
+    margin: 0;
+}
+
+hr{
+    margin: 15px 0;
+}
+
+.input-group{
+    display: flex;
+    gap: 10px;
+}
+
+input{
+    flex: 1;
+    padding: 8px;
+}
+
+button{
+    padding: 8px 15px;
+    background-color: #1e7e34;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.main-content{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.info{
+    width: 200px;
+}
+
+table{
+    width: 500px;
+}
+
+th{
+    text-align: left;
+}
+
+td{
+    padding: 6px 0;
+}
+
+.completada{
+    text-decoration: line-through;
+    color: gray;
+}
+
+.borrar{
+    color: red;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Todo List</h1>
+    <hr>
+
+    <label>Nueva tarea</label>
+    <div class="input-group">
+        <input type="text" id="nuevaTarea">
+        <button onclick="agregarTarea()">Agregar</button>
+    </div>
+
+    <div class="main-content">
+
+        <div class="info">
+            <p>Total: <strong id="total">0</strong></p>
+            <p>Realizadas: <strong id="realizadas">0</strong></p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tarea</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="listaTareas"></tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+// Tareas iniciales con ID fijo
+let tareas = [
+    { id: 16, descripcion: "Hacer mercado", completado: true },
+    { id: 60, descripcion: "Estudiar para la prueba", completado: false },
+    { id: 24, descripcion: "Sacar a pasear a Lobby", completado: false }
+];
+
+// Generar ID aleatorio para nuevas tareas
+function generarID() {
+    return Math.floor(Math.random() * 1000);
+}
+
+function renderizar() {
+    const lista = document.getElementById("listaTareas");
+    lista.innerHTML = "";
+
+    tareas.forEach((tarea, index) => {
+
+        lista.innerHTML += `
+        <tr>
+            <td>${tarea.id}</td>
+            <td class="${tarea.completado ? 'completada' : ''}">
+                ${tarea.descripcion}
+            </td>
+            <td>
+                <input type="checkbox"
+                    ${tarea.completado ? "checked" : ""}
+                    onchange="cambiarEstado(${index})">
+            </td>
+            <td>
+                <span class="borrar"
+                    onclick="borrarTarea(${index})">❌</span>
+            </td>
+        </tr>
+        `;
+    });
+
+    actualizarContadores();
+}
+
+function agregarTarea() {
+    const input = document.getElementById("nuevaTarea");
+    const texto = input.value.trim();
+
+    if (texto !== "") {
+        tareas.push({
+            id: generarID(),
+            descripcion: texto,
+            completado: false
+        });
+        input.value = "";
+        renderizar();
+    }
+}
+
+function borrarTarea(index) {
+    tareas.splice(index, 1);
+    renderizar();
+}
+
+function cambiarEstado(index) {
+    tareas[index].completado = !tareas[index].completado;
+    renderizar();
+}
+
+function actualizarContadores() {
+    document.getElementById("total").textContent = tareas.length;
+    document.getElementById("realizadas").textContent =
+        tareas.filter(t => t.completado).length;
+}
+
+renderizar();
+
+</script>
+
+</body>
+</html>
