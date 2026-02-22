@@ -44,10 +44,10 @@ Tabla con:
 
 Botón ❌ para eliminar
 
-📂 Estructura del proyecto
-javascript_todoList/
-│── index.html
-│── README.md
+           📂 Estructura del proyecto
+             javascript_todoList/
+             │── index.html
+             │── README.md
 
 
 Captura pantalla de Proyecto 
